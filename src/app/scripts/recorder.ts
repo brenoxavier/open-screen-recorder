@@ -1,17 +1,23 @@
+/* eslint-disable import/no-unresolved */
 
 import { DesktopCapturerSource } from 'electron'
-import { Menu, MenuItem } from '@electron/remote'
+import { app, Menu, MenuItem, Notification } from '@electron/remote'
 import { getAvailableVideoSources, streamVideoSource } from './capture'
+import { writeFile } from 'original-fs'
 
 import '../styles/global.css'
 import '../styles/recorder.css'
 
 const videoPreviewElement = document.querySelector<HTMLVideoElement>('#video-preview')
+const toggleRecorderElement = document.querySelector<HTMLButtonElement>('#toggle-recorder')
 const selectSourceElement = document.querySelector<HTMLButtonElement>('#select-source')
 const toggleAudioElement = document.querySelector<HTMLInputElement>('#toggle-audio')
 
 let currentVideoSource: DesktopCapturerSource
 let stream: MediaStream
+let mediaRecorder: MediaRecorder
+let recording = false
+let mediaRecordedChunks: BlobPart[] = []
 
 selectSourceElement.addEventListener('click', async () => {
   const sources = await getAvailableVideoSources();
@@ -42,6 +48,48 @@ async function selectVideoSource(source: DesktopCapturerSource) {
   currentVideoSource = source
   videoPreviewElement.srcObject = stream
   videoPreviewElement.play()
+}
+
+toggleRecorderElement.addEventListener('click', () => {
+  recording = !recording
+
+  if (recording) {
+    toggleRecorderElement.innerText = 'Recording'
+    selectSourceElement.disabled = true
+
+    mediaRecorder = new MediaRecorder(stream, {
+      mimeType: 'video/webm; codeds=vp9'
+    })
+
+    mediaRecorder.ondataavailable = recordingDataAvailable
+    mediaRecorder.onstop = saveRecording
+
+    mediaRecorder.start()
+  } else {
+    toggleRecorderElement.innerText = 'Start Recorder'
+    selectSourceElement.disabled = false
+
+    mediaRecorder.stop()
+  }
+})
+
+async function recordingDataAvailable(event: BlobEvent) {
+  mediaRecordedChunks = [event.data]
+}
+
+async function saveRecording() {
+  const blob = new Blob(mediaRecordedChunks, {
+    type: 'video/webm; codecs=vp9'
+  })
+
+  const buffer = Buffer.from(await blob.arrayBuffer())
+
+  writeFile(`${app.getPath('videos')}/vid-${Date.now()}.webm`, buffer, () => {
+    new Notification({
+      title: 'Screen Recorder',
+      body: 'Video saved successfully!'
+    }).show()
+  })
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

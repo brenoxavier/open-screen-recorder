@@ -1,6 +1,6 @@
 
 import { DesktopCapturerSource } from 'electron'
-import { Menu } from '@electron/remote'
+import { Menu, MenuItem } from '@electron/remote'
 import { getAvailableVideoSources, streamVideoSource } from './capture'
 
 import '../styles/global.css'
@@ -15,19 +15,21 @@ let stream: MediaStream
 
 selectSourceElement.addEventListener('click', async () => {
   const sources = await getAvailableVideoSources();
+  const menuItems = []
 
-  const menu = Menu.buildFromTemplate(
-    sources.map(source => {
+  for (const source of sources) {
+    if (source) {
       if (currentVideoSource.id !== source.id) {
-        return {
+        menuItems.push(new MenuItem({
           label: source.name,
           click: () => selectVideoSource(source)
-        }
+        }))
       }
-    })
-  )
+    }
+  }
 
-  menu.popup()
+  Menu.buildFromTemplate(menuItems)
+    .popup()
 })
 
 async function selectVideoSource(source: DesktopCapturerSource) {

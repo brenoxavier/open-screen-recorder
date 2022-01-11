@@ -1,0 +1,49 @@
+header, main {
+    text-align: center;
+  }
+  
+  header {
+    padding: 1rem 0;
+  }
+  
+  main {
+    margin-top: auto !important;
+    padding: 2rem 0;
+  }
+  
+  #video-preview {
+    background-color: #000000;
+    max-width: 95vw;
+    min-width: 95vw;
+    max-height: 69vh;
+  }
+  
+  #select-source {
+    background: none;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 0.1rem 0;
+  }
+  
+  #select-source:disabled {
+    cursor: auto;
+  }
+  
+  #recorder-options {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  #recorder-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  #recorder-info div {
+    margin-left: 1rem;
+  }
+  
+  #recorder-settings {
+    text-align: left;
+  }

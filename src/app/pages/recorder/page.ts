@@ -1,12 +1,12 @@
 /* eslint-disable import/no-unresolved */
 
 import { DesktopCapturerSource } from 'electron'
-import { app, Menu, MenuItem, Notification, session } from '@electron/remote'
+import { app, Menu, MenuItem, Notification } from '@electron/remote'
 import { getAvailableVideoSources, streamVideoSource } from '../../services/capture'
 import { writeFile } from 'original-fs'
 
-import '../styles/global.css'
-import '../styles/recorder.css'
+import '../global.css'
+import './page.css'
 
 const videoPreviewElement = document.querySelector<HTMLVideoElement>('#video-preview')
 const toggleRecorderElement = document.querySelector<HTMLButtonElement>('#toggle-recorder')

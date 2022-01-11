@@ -61,8 +61,8 @@
               "entryPoints": [
                 {
                   "name": "recorder_window",
-                  "html": "./src/app/pages/recorder.html",
-                  "js": "./src/app/scripts/recorder.ts"
+                  "html": "./src/app/pages/recorder/page.html",
+                  "js": "./src/app/pages/recorder/page.ts"
                 }
               ]
             }

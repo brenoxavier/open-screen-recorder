@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron"
-import { setRecorderMenu } from "./recorder-menu"
+import { setRecorderMenu } from "./menu"
 
 declare const RECORDER_WINDOW_WEBPACK_ENTRY: string
 

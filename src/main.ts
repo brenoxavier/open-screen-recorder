@@ -2,7 +2,7 @@
 const remote = require('@electron/remote/main')
 
 import { app, dialog } from "electron"
-import { createRecorderWindow } from "./app/pages/recorder/recorder-window"
+import { createRecorderWindow } from "./app/pages/recorder/window"
 import { english as messages } from "./lang/languages"
 
 try {

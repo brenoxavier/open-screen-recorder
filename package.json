@@ -19,7 +19,16 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "protocols": [
+          {
+            "name": "Screen Recorder",
+            "schemes": [
+              "screen-recorder"
+            ]
+          }
+        ]
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -35,11 +44,9 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
+          "config": {
+            "mimeType": ["x-scheme-handler/screen-recorder"]
+          }
         }
       ],
       "plugins": [
@@ -54,7 +61,7 @@
               "entryPoints": [
                 {
                   "name": "recorder_window",
-                  "html": "./src/app/recorder.html",
+                  "html": "./src/app/pages/recorder.html",
                   "js": "./src/app/scripts/recorder.ts"
                 }
               ]
@@ -86,6 +93,7 @@
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
+    "axios": "^0.24.0",
     "electron-squirrel-startup": "^1.0.0"
   }
 }

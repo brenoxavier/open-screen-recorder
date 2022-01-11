@@ -1,8 +1,8 @@
 /* eslint-disable import/no-unresolved */
 
 import { DesktopCapturerSource } from 'electron'
-import { app, Menu, MenuItem, Notification } from '@electron/remote'
-import { getAvailableVideoSources, streamVideoSource } from './capture'
+import { app, Menu, MenuItem, Notification, session } from '@electron/remote'
+import { getAvailableVideoSources, streamVideoSource } from '../../services/capture'
 import { writeFile } from 'original-fs'
 
 import '../styles/global.css'

@@ -105,3 +105,6 @@ dist
 
 # WebPack files
 .webpack
+
+# Electron build output
+out

@@ -13,7 +13,7 @@ try {
     app.on('ready', async () => {
       const recorderWindow = await createRecorderWindow()
       
-      urlListener(app)
+      urlListener(app, recorderWindow)
       remote.initialize()
       remote.enable(recorderWindow.webContents)
     })

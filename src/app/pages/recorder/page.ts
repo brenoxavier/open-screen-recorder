@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 
 import { DesktopCapturerSource, ipcRenderer } from 'electron'
-import { app, Menu, MenuItem, Notification } from '@electron/remote'
+import { app, dialog, Menu, MenuItem, Notification } from '@electron/remote'
 import { getAvailableVideoSources, streamVideoSource } from '../../services/capture'
 import { writeFile } from 'original-fs'
 
@@ -97,6 +97,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   await selectVideoSource(source)
 })
 
-ipcRenderer.on('save-token', (event, args) => {
-  console.log(event, args)
+ipcRenderer.on('save-token', (_event, args) => {
+  localStorage.setItem('token', args)
+  
+  dialog.showMessageBox({
+    title: 'Screen Recorder',
+    message: 'Screen Recorder',
+    detail: 'Authentication performed successfully!',
+    type: 'info'
+  })
 })

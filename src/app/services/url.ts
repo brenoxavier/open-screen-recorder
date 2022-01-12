@@ -1,6 +1,6 @@
-import { App, dialog, ipcMain } from 'electron'
+import { App, BrowserWindow, dialog } from 'electron'
 
-export default function urlListener(app: App): void {
+export default function urlListener(app: App, window: BrowserWindow): void {
   switch (process.platform) {
     case 'linux':
       searchUrlinArgv(process.argv)
@@ -9,7 +9,7 @@ export default function urlListener(app: App): void {
         const url = searchUrlinArgv(argv)
         const token = url.searchParams.get('token')
 
-        saveTokenInRenderedProcess(token)
+        saveTokenInRenderedProcess(window, token)
       })
 
       break
@@ -21,7 +21,7 @@ export default function urlListener(app: App): void {
         const urlObject = new URL(url)
         const token = urlObject.searchParams.get('token')
 
-        saveTokenInRenderedProcess(token)
+        saveTokenInRenderedProcess(window, token)
       })
 
       break;
@@ -41,6 +41,6 @@ function searchUrlinArgv(argv: string[]): URL | null {
   return null
 }
 
-function saveTokenInRenderedProcess(url: string) {
-  ipcMain.emit('save-token', url)
+function saveTokenInRenderedProcess(window: BrowserWindow, url: string) {
+  window.webContents.send('save-token', url)
 }

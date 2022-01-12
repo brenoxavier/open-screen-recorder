@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron"
-import { setRecorderMenu } from "./menu"
+import { menu } from "./menu"
 
 declare const RECORDER_WINDOW_WEBPACK_ENTRY: string
 
@@ -11,8 +11,7 @@ export async function createRecorderWindow(): Promise<BrowserWindow> {
     }
   })
 
-  setRecorderMenu()
+  window.setMenu(menu)
   await window.loadURL(RECORDER_WINDOW_WEBPACK_ENTRY)
-  window.webContents.openDevTools()
   return window
 }

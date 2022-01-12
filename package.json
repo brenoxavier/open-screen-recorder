@@ -63,6 +63,11 @@
                   "name": "recorder_window",
                   "html": "./src/app/pages/recorder/page.html",
                   "js": "./src/app/pages/recorder/page.ts"
+                },
+                {
+                  "name": "settings_page",
+                  "html": "./src/app/pages/settings/page.html",
+                  "js": "./src/app/pages/settings/page.ts"
                 }
               ]
             }

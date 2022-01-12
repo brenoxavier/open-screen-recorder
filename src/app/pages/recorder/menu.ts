@@ -1,28 +1,28 @@
-import { Menu } from "electron"
+import { BrowserWindow, Menu } from "electron"
 
-export const menu = Menu.buildFromTemplate([
-  {
-    label: 'File',
-    submenu: [
-      {
-        label: 'Settings',
-        submenu: [
-          {
-            label: 'Google Account'
-          }
-        ]
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Exit',
-        role: 'close'
-      }
-    ]
-  },
-  {
-    label: 'Developer Tools',
-    role: 'toggleDevTools'
-  }
-])
+declare const SETTINGS_PAGE_WEBPACK_ENTRY: string
+
+export function buildRecorderWindowMenu(window: BrowserWindow): Menu {
+  return Menu.buildFromTemplate([
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Settings',
+          click: () => window.loadURL(SETTINGS_PAGE_WEBPACK_ENTRY)
+        },
+        {
+          type: 'separator'
+        },
+        {
+          label: 'Exit',
+          role: 'close'
+        }
+      ]
+    },
+    {
+      label: 'Developer Tools',
+      role: 'toggleDevTools'
+    }
+  ])
+}

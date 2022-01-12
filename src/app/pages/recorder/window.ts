@@ -2,7 +2,7 @@
 const remote = require('@electron/remote/main')
 
 import { BrowserWindow } from "electron"
-import { menu } from "./menu"
+import { buildRecorderWindowMenu } from "./menu"
 
 declare const RECORDER_WINDOW_WEBPACK_ENTRY: string
 
@@ -16,6 +16,8 @@ export async function createRecorderWindow(): Promise<BrowserWindow> {
     }
   })
 
+  const menu = buildRecorderWindowMenu(window)
+  
   remote.enable(window.webContents)
   window.setMenu(menu)
   await window.loadURL(RECORDER_WINDOW_WEBPACK_ENTRY)

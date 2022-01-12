@@ -1,12 +1,32 @@
-import { App, dialog } from 'electron'
+import { App, dialog, ipcMain } from 'electron'
 
 export default function urlListener(app: App): void {
-  if (process.platform === 'linux') {
-    searchUrlinArgv(process.argv)
+  switch (process.platform) {
+    case 'linux':
+      searchUrlinArgv(process.argv)
 
-    app.on('second-instance', (_event, argv) => {
-      searchUrlinArgv(argv)
-    })
+      app.on('second-instance', (_event, argv) => {
+        const url = searchUrlinArgv(argv)
+        const token = url.searchParams.get('token')
+
+        saveTokenInRenderedProcess(token)
+      })
+
+      break
+
+    case 'darwin':
+      app.setAsDefaultProtocolClient('screen-recorder')
+
+      app.on('open-url', (_event, url) => {
+        const urlObject = new URL(url)
+        const token = urlObject.searchParams.get('token')
+
+        saveTokenInRenderedProcess(token)
+      })
+
+      break;
+    default:
+      break;
   }
 }
 
@@ -19,4 +39,8 @@ function searchUrlinArgv(argv: string[]): URL | null {
   })
 
   return null
+}
+
+function saveTokenInRenderedProcess(url: string) {
+  ipcMain.emit('save-token', url)
 }

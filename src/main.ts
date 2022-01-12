@@ -3,6 +3,7 @@ const remote = require('@electron/remote/main')
 
 import { app, dialog } from "electron"
 import { createRecorderWindow } from "./app/pages/recorder/window"
+import urlListener from "./app/services/url"
 import { english as messages } from "./lang/languages"
 
 try {
@@ -12,6 +13,7 @@ try {
     app.on('ready', async () => {
       const recorderWindow = await createRecorderWindow()
       
+      urlListener(app)
       remote.initialize()
       remote.enable(recorderWindow.webContents)
     })

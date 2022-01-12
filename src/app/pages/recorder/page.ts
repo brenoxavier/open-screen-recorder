@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 
-import { DesktopCapturerSource } from 'electron'
+import { DesktopCapturerSource, ipcRenderer } from 'electron'
 import { app, Menu, MenuItem, Notification } from '@electron/remote'
 import { getAvailableVideoSources, streamVideoSource } from '../../services/capture'
 import { writeFile } from 'original-fs'
@@ -95,4 +95,8 @@ async function saveRecording() {
 document.addEventListener('DOMContentLoaded', async () => {
   const [source] = await getAvailableVideoSources()
   await selectVideoSource(source)
+})
+
+ipcRenderer.on('save-token', (event, args) => {
+  console.log(event, args)
 })

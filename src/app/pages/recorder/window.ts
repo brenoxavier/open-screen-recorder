@@ -13,5 +13,6 @@ export async function createRecorderWindow(): Promise<BrowserWindow> {
 
   setRecorderMenu()
   await window.loadURL(RECORDER_WINDOW_WEBPACK_ENTRY)
+  window.webContents.openDevTools()
   return window
 }

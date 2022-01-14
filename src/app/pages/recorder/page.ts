@@ -3,6 +3,7 @@
 import { DesktopCapturerSource, ipcRenderer } from 'electron'
 import { app, dialog, Menu, MenuItem, Notification } from '@electron/remote'
 import { getAvailableVideoSources, streamVideoSource } from '../../services/capture'
+import { createAuthenticatedInstanceGoogleApis, uploadVideo } from '../../services/google'
 import { writeFile } from 'original-fs'
 
 import '../global.css'
@@ -83,12 +84,18 @@ async function saveRecording() {
   })
 
   const buffer = Buffer.from(await blob.arrayBuffer())
+  const videoPath = `${app.getPath('videos')}/vid-${Date.now()}.webm`
 
-  writeFile(`${app.getPath('videos')}/vid-${Date.now()}.webm`, buffer, () => {
+  writeFile(videoPath, buffer, async () => {
     new Notification({
       title: 'Screen Recorder',
-      body: 'Video saved successfully!'
+      body: 'Video saved successfully! Starting Upload to YouTube...'
     }).show()
+
+    const token = localStorage.getItem('token')
+    const google = createAuthenticatedInstanceGoogleApis(token)
+    const videoLink = await uploadVideo(google, videoPath)
+    console.log(videoLink)
   })
 }
 

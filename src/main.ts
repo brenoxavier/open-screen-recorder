@@ -2,6 +2,7 @@ import { app, dialog } from "electron"
 import { createRecorderWindow } from "./app/pages/recorder/window"
 import urlListener from "./app/services/url"
 import { english as messages } from "./lang/languages"
+import { startListeners } from "./listeners"
 
 try {
   const isPrimary = app.requestSingleInstanceLock()
@@ -10,6 +11,7 @@ try {
     app.on('ready', async () => {
       const recorderWindow = await createRecorderWindow()
       urlListener(app, recorderWindow)
+      startListeners()
     })
 
     app.on('window-all-closed', () => {

@@ -3,7 +3,6 @@
 import { DesktopCapturerSource, ipcRenderer } from 'electron'
 import { app, dialog, Menu, MenuItem, Notification } from '@electron/remote'
 import { getAvailableVideoSources, streamVideoSource } from '../../services/capture'
-import { createAuthenticatedInstanceGoogleApis, uploadVideo } from '../../services/google'
 import { writeFile } from 'original-fs'
 
 import '../global.css'
@@ -93,9 +92,11 @@ async function saveRecording() {
     }).show()
 
     const token = localStorage.getItem('token')
-    const google = createAuthenticatedInstanceGoogleApis(token)
-    const videoLink = await uploadVideo(google, videoPath)
-    console.log(videoLink)
+
+    ipcRenderer.send('upload-video', {
+      token,
+      videoPath
+    })
   })
 }
 

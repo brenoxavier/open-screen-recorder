@@ -1,0 +1,20 @@
+name:  Test Execution
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  sonarqube:
+    name: Sonarqube
+    runs-on: ubuntu-latest
+    steps:
+    - name: Copying Files
+      uses: actions/checkout@v3
+      
+    - name: Running Sonar Scanner
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST }}
+        
